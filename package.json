@@ -1,0 +1,24 @@
+{
+  "name": "etfdata",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "bluebird": "^3.4.6",
+    "cheerio": "^0.22.0",
+    "express": "^4.14.0",
+    "jade": "^1.11.0",
+    "moment": "^2.16.0",
+    "mongoose": "^4.6.6",
+    "request": "^2.78.0",
+    "superagent": "^2.3.0",
+    "underscore": "^1.8.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
