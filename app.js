@@ -25,67 +25,64 @@ app.use(bodyParser());
 // 解析链接https://www.jisilu.cn/data/qdii/qdii_list/获取的数据。
 function getUrl1(sres){
 	var jsonDatas = (JSON.parse(sres.text))["rows"];
-	var movies = [];
+	var etfDatas = [];
 	for( var i = 0; i < jsonDatas.length; i++){
 		var jsonData = jsonDatas[i];
 		var id = jsonData['id'];
 		if (id == '513100'){
 			var etfData = jsonData['cell'];				
-			movies.push({
+			etfDatas.push({
 				id: etfData["fund_id"],
 				nm: etfData['fund_nm'],
 				price: etfData["price"] + '(' + etfData["increase_rt"] + ')',
 				estimate_value: etfData["estimate_value"] + '(' + etfData["est_val_increase_rt"] + ')' ,
-				discount_rt: etfData["discount_rt"],
-				ref_increase_rt: etfData["ref_increase_rt"]			
+				discount_rt: etfData["discount_rt"]		
 			});
 		}
 	}
-	return movies;
+	return etfDatas;
 }
 
 // 解析链接https://www.jisilu.cn/jisiludata/etf.php?获取的数据。
 function getUrl2(sres){        
 	var jsonDatas = (JSON.parse(sres.text))["rows"];
-	var movies = [];
+	var etfDatas = [];
 	for( var i = 0; i < jsonDatas.length; i++){
 		var jsonData = jsonDatas[i]
 		var id = jsonData['id'];
 		if (id == '510050' || id == '159920'){
 			var etfData = jsonData['cell'];	
-			movies.push({
+			etfDatas.push({
 				id: etfData["fund_id"],
 				nm: etfData['fund_nm'],
 				price: etfData["price"] + '(' + etfData["increase_rt"] + ')',
 				estimate_value: etfData["estimate_value"] + '(' + etfData["index_increase_rt"] + ')' ,
-				discount_rt: etfData["discount_rt"],
-				ref_increase_rt: etfData["index_increase_rt"]	
+				discount_rt: etfData["discount_rt"]
 			});
 		}
 	}	
-	return movies;
+	return etfDatas;
 }
 
 // 解析链接https://www.jisilu.cn/jisiludata/etf.php?qtype=pmetf获取的数据。
 function getUrl3(sres){        
 	var jsonDatas = (JSON.parse(sres.text))["rows"];
-	var movies = [];
+	var etfDatas = [];
 	for( var i = 0; i < jsonDatas.length; i++){
 		var jsonData = jsonDatas[i]
 		var id = jsonData['id'];
 		if (id == '518880'){
 			var etfData = jsonData['cell'];	
-			movies.push({
+			etfDatas.push({
 				id: etfData["fund_id"],
 				nm: etfData['fund_nm'],
 				price: etfData["price"] + '(' + etfData["increase_rt"] + ')',
 				estimate_value: etfData["estimate_value"] + '(' + etfData["index_increase_rt"] + ')' ,
-				discount_rt: etfData["discount_rt"],
-				ref_increase_rt: etfData["index_increase_rt"]	
+				discount_rt: etfData["discount_rt"]
 			});
 		}
 	}	
-	return movies;
+	return etfDatas;
 }
 
 // 根据链接不同调用不同的解析方法。
@@ -105,7 +102,7 @@ var fetchCourseArray =["https://www.jisilu.cn/data/qdii/qdii_list/",
 "https://www.jisilu.cn/jisiludata/etf.php?","https://www.jisilu.cn/jisiludata/etf.php?qtype=pmetf"];
 
 app.get("/", function(req, res){
-    var movies = [];	
+    var etfDatas = [];	
     Promise.all(fetchCourseArray).then(function(pages){
         pages.forEach(function(url){
             superagent.get(url).then(function (sres) {				
@@ -113,23 +110,23 @@ app.get("/", function(req, res){
                 return next(err);
               }
               var temp = parseData(url, sres);              
-              temp.forEach(function(movie){
-                movies.push(movie);
+              temp.forEach(function(etfData){
+                etfDatas.push(etfData);
               });  
-			  dataShow(movies, res);
+			  dataShow(etfDatas, res);
             });
         });        
     });    
 });
 
 // 根据获得的数据进行页面渲染。数据没获取完整则不进行展示。
-function dataShow(movies, res){
-	if(movies == null || movies.length != 4){
+function dataShow(etfDatas, res){
+	if(etfDatas == null || etfDatas.length != 4){
 		return ;
 	}
 	res.render('list',{
 		title:'场内基金折溢价',
-		movies:movies
+		etfDatas:etfDatas
 	});
 }
 

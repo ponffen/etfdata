@@ -3,14 +3,15 @@ html
     meta(charset="utf-8")
     head
         title #{title}
-    body
         link(href="/libs/bootstrap/dist/css/bootstrap.min.css", rel="stylesheet")
         script(src="/libs/jquery/dist/jquery.min.js")
         script(Src="/libs/bootstrap/dist/js/bootstrap.min.js")
+    body
         .container
             .row
                 .page-header
                     h1= title
+                    small 注：采用当日盘中实时估值。
         block content
             .container
                 .row
@@ -22,13 +23,11 @@ html
                                 th 现价(涨幅)
                                 th 估值(涨幅) 
                                 th 折溢价 
-                                th 指数涨幅
                             tbody
-                                each item in movies
+                                each item in etfDatas
                                     tr(class="item-id-#{item.id}")
                                         td #{item.id}
                                         td #{item.nm}
                                         td #{item.price}
                                         td #{item.estimate_value}
-                                        td #{item.discount_rt}
-                                        td #{item.ref_increase_rt}                               
+                                        td #{item.discount_rt}                             
