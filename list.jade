@@ -20,14 +20,15 @@ html
                             tr
                                 th 代码
                                 th 名称
+                                th 折溢价
                                 th 现价(涨幅)
                                 th 估值(涨幅) 
-                                th 折溢价 
                             tbody
                                 each item in etfDatas
                                     tr(class="item-id-#{item.id}")
                                         td #{item.id}
                                         td #{item.nm}
+                                        td #{item.discount_rt} 
                                         td #{item.price}
                                         td #{item.estimate_value}
-                                        td #{item.discount_rt}                             
+                                                                    
